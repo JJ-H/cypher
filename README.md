@@ -8,8 +8,23 @@
 
 
 ## Usage
+1、拉取本项目代码
+```shell
+# 拉取本仓库代码
+git clone https://github.com/JJ-H/cypher.git
 
-可通过 help 命令查看帮助文档
+cd cypher
+
+# 构建可执行文件
+go build -o bin/cypher main.go
+```
+
+2、将可执行文件 `cypher` 拷贝到 `/usr/local/bin` 目录下
+```shell
+cp bin/cypher /usr/local/bin
+```
+
+通过 help 命令查看帮助文档
 
 ```shell
 ➜ ~ cypher --help

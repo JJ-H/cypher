@@ -96,6 +96,9 @@ func writeFile(content []byte) error {
 		panic(err)
 	}
 	file, err = os.OpenFile(dir+"/cypher.json", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+	if err != nil {
+		return err
+	}
 	_, err = file.Write(content)
 	defer file.Close()
 	return err

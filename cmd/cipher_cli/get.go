@@ -27,7 +27,11 @@ var getCmd = &cobra.Command{
 			fmt.Println("未查询到该域名的凭据！")
 			return
 		}
-		clipboard.WriteAll(cypher.Password)
+		err := clipboard.WriteAll(cypher.Password)
+		if err != nil {
+			fmt.Println("复制密码到剪切板失败！")
+			return
+		}
 		fmt.Println("密码已复制到剪切板！")
 	},
 }

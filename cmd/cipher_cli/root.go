@@ -10,7 +10,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "cypher",
 	Short: "Cypher is a cli tool for cipher manager",
-	Long: `You can easily manage your credentials with cypher 
+	Long: `You can easily manage your cyphers with cypher 
 like set、get、list、delete and so on.`,
 }
 
