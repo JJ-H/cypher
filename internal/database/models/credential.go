@@ -7,7 +7,7 @@ type Credential struct {
 	Password string `json:"password"`
 }
 
-type CredentialList []Credential
+type CredentialList []*Credential
 
 func (c Credential) ToString() string {
 	return c.Domain + "\t" + c.Username + "\t" + c.Password

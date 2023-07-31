@@ -1,7 +1,7 @@
 package tools
 
 import (
-	"cipher_manager/internal/database/models"
+	"cypher/internal/database/models"
 	"github.com/olekukonko/tablewriter"
 	"os"
 )

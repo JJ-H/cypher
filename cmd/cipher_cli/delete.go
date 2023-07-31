@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"cipher_manager/internal/services"
-	"fmt"
+	"cypher/internal/services"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -18,14 +18,14 @@ var deleteCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		domain := args[0]
 		if domain == "" {
-			fmt.Println("请输入 domain 以删除！")
+			color.Red("请输入 domain 以删除！")
 			return
 		}
 		services.CredentialSrv.DeleteCypherByDomain(domain)
 		if services.CredentialSrv.GetCredentialByDomain(domain).Password == "" {
-			fmt.Println("删除凭证成功！")
+			color.Green("删除凭证成功！")
 			return
 		}
-		fmt.Println("删除凭证失败！")
+		color.Red("删除凭证失败！")
 	},
 }

@@ -1,8 +1,8 @@
 package services
 
 import (
-	"cipher_manager/internal/database"
-	"cipher_manager/internal/database/models"
+	"cypher/internal/database"
+	"cypher/internal/database/models"
 	"fmt"
 	"testing"
 )

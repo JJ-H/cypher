@@ -1,0 +1,5 @@
+app_name = "Cipher"
+
+[crypto]
+type = "AES"
+key = "1234567890123456"

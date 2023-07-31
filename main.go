@@ -1,14 +1,8 @@
 package main
 
 import (
-	cmd "cipher_manager/cmd/cipher_cli"
-	"cipher_manager/constant"
-	"os"
+	cmd "cypher/cmd/cipher_cli"
 )
-
-func init() {
-	constant.ProjectPath, _ = os.Getwd()
-}
 
 func main() {
 	cmd.Execute()

@@ -2,9 +2,11 @@ package services
 
 import (
 	"bufio"
-	"cipher_manager/internal/database"
-	"cipher_manager/internal/database/models"
+	"cypher/internal/database"
+	"cypher/internal/database/models"
+	"cypher/internal/errors"
 	"encoding/json"
+	"github.com/fatih/color"
 	"io/ioutil"
 	"os"
 )
@@ -39,13 +41,13 @@ func (c CredentialService) SetCredential(credential models.Credential) models.Cr
 	flag := false
 	for i, v := range credentialList {
 		if v.Domain == credential.Domain {
-			credentialList[i] = credential
+			credentialList[i] = &credential
 			flag = true
 			break
 		}
 	}
 	if !flag {
-		credentialList = append(credentialList, credential)
+		credentialList = append(credentialList, &credential)
 	}
 	ciphers, err := json.Marshal(credentialList)
 	if err != nil {
@@ -63,17 +65,26 @@ func (c CredentialService) DeleteCypherByDomain(domain string) {
 	if err != nil {
 		panic(err)
 	}
+	flag := false
 	for i, v := range credentialList {
 		if v.Domain == domain {
 			credentialList = append(credentialList[:i], credentialList[i+1:]...)
+			flag = true
 			break
 		}
+	}
+	if !flag {
+		color.Red("未找到该域名的凭证！")
+		return
 	}
 	ciphers, err := json.Marshal(credentialList)
 	if err != nil {
 		panic(err)
 	}
 	err = writeFile(ciphers)
+	if err != nil {
+		color.Red("写入文件失败！")
+	}
 }
 
 func (c CredentialService) GetCredentialByDomain(domain string) models.Credential {
@@ -83,7 +94,7 @@ func (c CredentialService) GetCredentialByDomain(domain string) models.Credentia
 	}
 	for _, v := range credentialList {
 		if v.Domain == domain {
-			return v
+			return *v
 		}
 	}
 	return models.Credential{}
@@ -99,7 +110,9 @@ func writeFile(content []byte) error {
 	if err != nil {
 		return err
 	}
-	_, err = file.Write(content)
+	if _, err = file.Write(content); err != nil {
+		return errors.WriteFileError
+	}
 	defer file.Close()
-	return err
+	return nil
 }

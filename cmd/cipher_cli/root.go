@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"cipher_manager/internal/database"
+	"cypher/internal/database"
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"

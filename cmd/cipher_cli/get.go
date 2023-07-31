@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"cipher_manager/internal/services"
-	"fmt"
+	"cypher/internal/services"
+	"cypher/internal/tools/crypto"
 	"github.com/atotto/clipboard"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -17,21 +18,27 @@ var getCmd = &cobra.Command{
 	Long:  `Get a specified domain cypher`,
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		cypherAES := crypto.CypherAES
 		domain := args[0]
 		if domain == "" {
-			fmt.Println("请输入 domain 以查询！")
+			color.Red("请输入 domain 以查询！")
 			return
 		}
 		cypher := services.CredentialSrv.GetCredentialByDomain(domain)
 		if cypher.Password == "" {
-			fmt.Println("未查询到该域名的凭据！")
+			color.Red("未查询到该域名的凭据！")
 			return
 		}
-		err := clipboard.WriteAll(cypher.Password)
+		decodedCypher, err := cypherAES.Decrypt(cypher.Password)
 		if err != nil {
-			fmt.Println("复制密码到剪切板失败！")
+			color.Red("解密失败！")
 			return
 		}
-		fmt.Println("密码已复制到剪切板！")
+		err = clipboard.WriteAll(decodedCypher)
+		if err != nil {
+			color.Red("复制密码到剪切板失败！")
+			return
+		}
+		color.Green("密码已复制到剪切板！")
 	},
 }
