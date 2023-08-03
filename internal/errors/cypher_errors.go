@@ -9,4 +9,7 @@ var (
 
 	// 文件写入异常
 	WriteFileError = errors.New("文件写入异常！")
+
+	// 设置密钥失败
+	SetKeyError = errors.New("设置密钥失败！")
 )

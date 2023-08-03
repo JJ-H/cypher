@@ -28,9 +28,6 @@ var setCmd = &cobra.Command{
 		password := cmd.Flag("password").Value.String()
 		note := cmd.Flag("note").Value.String()
 
-		if domain == "" || password == "" {
-			color.Red("请至少输入 domain 和 password 以设置！")
-		}
 		var err error
 		if password, err = cypherAES.Encrypt(password); err != nil {
 			color.Red("加密失败！")
@@ -42,9 +39,11 @@ var setCmd = &cobra.Command{
 			Domain:   domain,
 			Username: username,
 			Password: password,
-			Note: note,
+			Note:     note,
 		}
-		services.CredentialSrv.SetCredential(cypher)
-		color.Green("设置凭证成功！")
+		_, err = services.CredentialSrv.SetCredential(cypher)
+		if err == nil {
+			color.Green("设置凭证成功！")
+		}
 	},
 }

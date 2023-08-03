@@ -58,7 +58,7 @@ func (c CredentialService) FuzzySearch(query string, attribute string) (Credenti
 	return newCredentialList, nil
 }
 
-func (c CredentialService) SetCredential(credential models.Credential) models.Credential {
+func (c CredentialService) SetCredential(credential models.Credential) (models.Credential, error) {
 	credentialList, err := c.ListCredential()
 	if err != nil {
 		panic(err)
@@ -66,12 +66,26 @@ func (c CredentialService) SetCredential(credential models.Credential) models.Cr
 	flag := false
 	for i, v := range credentialList {
 		if v.Domain == credential.Domain {
-			credentialList[i] = &credential
+			_credential := credentialList[i]
+			if credential.Username != "" {
+				_credential.Username = credential.Username
+			}
+			if credential.Password != "" {
+				_credential.Password = credential.Password
+			}
+			if credential.Note != "" {
+				_credential.Note = credential.Note
+			}
+
 			flag = true
 			break
 		}
 	}
 	if !flag {
+		if credential.Domain == "" || credential.Password == "" {
+			color.Red("请至少输入 domain 和 password 以设置！")
+			return models.Credential{}, errors.SetKeyError
+		}
 		credentialList = append(credentialList, &credential)
 	}
 	ciphers, err := json.Marshal(credentialList)
@@ -80,9 +94,9 @@ func (c CredentialService) SetCredential(credential models.Credential) models.Cr
 	}
 	err = writeFile(ciphers)
 	if err != nil {
-		return models.Credential{}
+		return models.Credential{}, errors.SetKeyError
 	}
-	return credential
+	return credential, nil
 }
 
 func (c CredentialService) DeleteCypherByDomain(domain string) {
