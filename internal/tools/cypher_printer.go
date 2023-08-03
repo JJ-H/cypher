@@ -15,8 +15,6 @@ func CypherPrinter(cyphers models.CredentialList, plaintext bool) {
 		tablewriter.Colors{tablewriter.FgBlackColor, tablewriter.BgGreenColor},
 		tablewriter.Colors{tablewriter.FgWhiteColor, tablewriter.BgBlackColor})
 	table.SetRowSeparator("-")
-
-
 	table.SetAlignment(tablewriter.ALIGN_LEFT)
 	for _, cipher := range cyphers {
 		if !plaintext {
