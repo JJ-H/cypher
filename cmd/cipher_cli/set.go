@@ -14,6 +14,7 @@ func init() {
 	setCmd.Flags().StringP("domain", "d", "", "cypher domain")
 	setCmd.Flags().StringP("username", "u", "", "cypher username")
 	setCmd.Flags().StringP("password", "p", "", "cypher password")
+	setCmd.Flags().StringP("note", "n", "", "cypher note")
 }
 
 var setCmd = &cobra.Command{
@@ -25,6 +26,8 @@ var setCmd = &cobra.Command{
 		domain := cmd.Flag("domain").Value.String()
 		username := cmd.Flag("username").Value.String()
 		password := cmd.Flag("password").Value.String()
+		note := cmd.Flag("note").Value.String()
+
 		if domain == "" || password == "" {
 			color.Red("请至少输入 domain 和 password 以设置！")
 		}
@@ -33,11 +36,13 @@ var setCmd = &cobra.Command{
 			color.Red("加密失败！")
 			return
 		}
+
 		cypher := models.Credential{
 			ID:       rand.Int63(),
 			Domain:   domain,
 			Username: username,
 			Password: password,
+			Note: note,
 		}
 		services.CredentialSrv.SetCredential(cypher)
 		color.Green("设置凭证成功！")
