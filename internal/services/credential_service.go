@@ -9,6 +9,7 @@ import (
 	"github.com/fatih/color"
 	"io/ioutil"
 	"os"
+	"regexp"
 )
 
 type CredentialList = models.CredentialList
@@ -31,6 +32,30 @@ func (c CredentialService) ListCredential() (CredentialList, error) {
 		return credentialList, nil
 	}
 	return credentialList, nil
+}
+
+func (c CredentialService) FuzzySearch(query string, attribute string) (CredentialList, error) {
+	credentialList, err := c.ListCredential()
+	if err != nil {
+		panic(err)
+	}
+
+	var newCredentialList CredentialList
+	for _, v := range credentialList {
+		var value string
+		if attribute == "domain" {
+			value = v.Domain
+		} else {
+			value = v.Note
+		}
+
+		matched, err := regexp.MatchString(query, value)
+		if err == nil && matched {
+			newCredentialList = append(newCredentialList, v)
+		}
+	}
+
+	return newCredentialList, nil
 }
 
 func (c CredentialService) SetCredential(credential models.Credential) models.Credential {

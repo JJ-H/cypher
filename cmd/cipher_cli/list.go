@@ -11,6 +11,8 @@ import (
 func init() {
 	rootCmd.AddCommand(listCmd)
 	listCmd.Flags().BoolP("plaintext", "P", false, "show plaintext password")
+	listCmd.Flags().StringP("domain", "d", "", "query by domain")
+	listCmd.Flags().StringP("note", "n", "", "query by note")
 }
 
 var listCmd = &cobra.Command{
@@ -18,8 +20,20 @@ var listCmd = &cobra.Command{
 	Short: "List all cyphers, Usage: cypher list [-P]",
 	Long:  `List all cyphers`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cypherAES := crypto.CypherAES
-		ciphers, err := services.CredentialSrv.ListCredential()
+		domain := cmd.Flag("domain").Value.String()
+		note := cmd.Flag("note").Value.String()
+
+		var ciphers services.CredentialList
+		var err error
+
+		if domain != "" {
+			ciphers, err = services.CredentialSrv.FuzzySearch(domain, "domain")
+		} else if note != "" {
+			ciphers, err = services.CredentialSrv.FuzzySearch(note, "note")
+		} else {
+			ciphers, err = services.CredentialSrv.ListCredential()
+		}
+
 		if err != nil {
 			color.Red("获取凭据列表失败!")
 			return
@@ -29,6 +43,7 @@ var listCmd = &cobra.Command{
 			return
 		}
 
+		cypherAES := crypto.CypherAES
 		for _, cypher := range ciphers {
 			var password string
 			if password, err = cypherAES.Decrypt(cypher.Password); err != nil {
