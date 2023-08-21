@@ -157,6 +157,11 @@ Use "cypher [command] --help" for more information about a command.
   | https://devops-ci.com | ci       | 000000  |
   +-----------------------+----------+---------+
   ```
+- 导出 csv
+  ```shell
+  ➜ ~ cypher export -o ~/Desktop/cypher.csv
+  导出成功，文件地址：/Users/xxxx/Desktop/cypher.csv
+  ```
 - 获取 cypher 版本
 
   ```shell
