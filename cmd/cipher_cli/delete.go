@@ -22,10 +22,5 @@ var deleteCmd = &cobra.Command{
 			return
 		}
 		services.CredentialSrv.DeleteCypherByDomain(domain)
-		if services.CredentialSrv.GetCredentialByDomain(domain).Password == "" {
-			color.Green("删除凭证成功！")
-			return
-		}
-		color.Red("删除凭证失败！")
 	},
 }

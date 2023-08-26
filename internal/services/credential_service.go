@@ -123,7 +123,9 @@ func (c CredentialService) DeleteCypherByDomain(domain string) {
 	err = writeFile(ciphers)
 	if err != nil {
 		color.Red("写入文件失败！")
+		return
 	}
+	color.Green("删除凭证成功！")
 }
 
 func (c CredentialService) GetCredentialByDomain(domain string) models.Credential {

@@ -17,8 +17,8 @@ func init() {
 
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "List all cyphers, Usage: cypher list [-P]",
-	Long:  `List all cyphers`,
+	Short: "List cyphers, Usage: cypher list [options]",
+	Long:  `List cyphers, support query by domain or note`,
 	Run: func(cmd *cobra.Command, args []string) {
 		domain := cmd.Flag("domain").Value.String()
 		note := cmd.Flag("note").Value.String()
