@@ -30,7 +30,7 @@ func (c CsvExporter) Export() error {
 	}
 	if _, err = os.Stat(c.destination); err == nil {
 		color.Red("当前路径已存在 %s !", c.destination)
-		return nil
+		return err
 	}
 	outFile, err := os.Create(c.destination)
 	if err != nil {
