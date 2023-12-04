@@ -2,9 +2,11 @@ package export
 
 import (
 	"cypher/internal/services"
+	"cypher/internal/tools"
 	"encoding/csv"
 	"github.com/fatih/color"
 	"os"
+	"time"
 )
 
 type CsvExporter struct {
@@ -38,12 +40,17 @@ func (c CsvExporter) Export() error {
 		return err
 	}
 	defer outFile.Close()
+	progressBar := tools.NewProgressBar(len(ciphers))
 	_csv := csv.NewWriter(outFile)
 	data := make([][]string, 0)
 	data = append(data, []string{"Domain", "Username", "Password", "Note"})
 	for _, v := range ciphers {
+		progressBar.Describe(v.Note)
+		time.Sleep(time.Second / 4)
+		progressBar.Add(1)
 		data = append(data, []string{v.Domain, v.Username, v.Password, v.Note})
 	}
+	progressBar.Finish()
 	err = _csv.WriteAll(data)
 	if err != nil {
 		color.Red("写入文件失败!")
