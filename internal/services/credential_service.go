@@ -20,21 +20,32 @@ var (
 	CredentialSrv = &CredentialService{}
 )
 
-func (c CredentialService) ListCredential() (CredentialList, error) {
-	reader := bufio.NewReader(database.DB)
+func NewCredentialService() *CredentialService {
+	return &CredentialService{}
+}
+
+func (c CredentialService) ListCredential() ([]*models.Credential, error) {
+	db := database.DB
+	if db == nil {
+		db = database.GetDB()
+		defer db.Close()
+	}
+	reader := bufio.NewReader(db)
 	ciphers, err := ioutil.ReadAll(reader)
 	var credentialList CredentialList
 	if err != nil {
+		panic(err)
 		return credentialList, err
 	}
 	err = json.Unmarshal(ciphers, &credentialList)
 	if err != nil {
+		panic(err)
 		return credentialList, nil
 	}
 	return credentialList, nil
 }
 
-func (c CredentialService) FuzzySearch(query string, attribute string) (CredentialList, error) {
+func (c CredentialService) FuzzySearch(query string, attribute string) ([]*models.Credential, error) {
 	credentialList, err := c.ListCredential()
 	if err != nil {
 		panic(err)
@@ -63,6 +74,7 @@ func (c CredentialService) SetCredential(credential models.Credential) (models.C
 	if err != nil {
 		panic(err)
 	}
+
 	flag := false
 	for i, v := range credentialList {
 		if v.Domain == credential.Domain {

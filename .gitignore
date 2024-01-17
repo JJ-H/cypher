@@ -2,3 +2,7 @@
 bin/
 .DS_Store
 config/config.ini
+frontend/dist
+frontend/node_modules
+build/bin
+build/darwin
