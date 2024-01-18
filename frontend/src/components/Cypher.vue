@@ -6,8 +6,14 @@ import {ListCredential} from "../../wailsjs/go/services/CredentialService";
 const data = reactive({
   cyphers: ref(null),
   keyword: ref(""),
-  selectType: ref("")
+  selectType: ref(""),
+  showPassword: ref(false)
 })
+
+function togglePasswordVisibility() {
+  data.showPassword = !data.showPassword
+  console.debug(data.showPassword)
+}
 
 const filterCyphers = computed(() =>
     data.cyphers.filter((cypher) => {
@@ -57,7 +63,7 @@ function copyPassword(password) {
     <div class="flex-container">
       <el-text class="mx-1 logo" type="success">🪺Cypher</el-text>
 
-      <div class="mt-4">
+      <div class="mt-4 flex-container">
         <el-input
             v-model="data.keyword"
             placeholder="请输入关键字进行搜索"
@@ -69,14 +75,26 @@ function copyPassword(password) {
               <el-option label="用户" value="2" />
               <el-option label="备注" value="3" />
             </el-select>
+
           </template>
         </el-input>
+        <el-button class="visible-btn" size="middle" @click="togglePasswordVisibility">密明文切换</el-button>
       </div>
     </div>
     <el-table v-if="data.cyphers" :data="filterCyphers" border stripe highlight-current-row style="width: 100%">
       <el-table-column prop="domain" label="域名" width="180" align="left"/>
       <el-table-column prop="username" label="用户名" width="180" align="left" />
-      <el-table-column prop="password" label="密码" align="left" />
+      <el-table-column label="密码" align="left">
+        <template #default="scope">
+          <div>
+            <span
+                v-if="data.showPassword"
+                disabled
+            >{{scope.row.password}}</span>
+            <span v-else>******</span>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column prop="note" label="备注" align="left" />
       <el-table-column label="操作" width="80px" align="center">
         <template #default="scope">
@@ -94,10 +112,15 @@ function copyPassword(password) {
   }
   .flex-container {
     padding-left: 10px;
-    padding-right: 10px;
+    padding-right: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: white;
+  }
+
+  .visible-btn {
+    color: #81cbf5;
+    background-color: #f8f8f8;
   }
 </style>
