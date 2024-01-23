@@ -60,7 +60,7 @@ function copyPassword(password) {
 
 <template>
   <main>
-    <div class="flex-container">
+    <div class="flex-container fixed">
       <el-text class="mx-1 logo" type="success">🪺Cypher</el-text>
 
       <div class="mt-4 flex-container">
@@ -122,5 +122,17 @@ function copyPassword(password) {
   .visible-btn {
     color: #81cbf5;
     background-color: #f8f8f8;
+  }
+  main {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+  }
+
+  .fixed {
+    position: sticky;
+    z-index:100;
+    top: 0;
   }
 </style>
