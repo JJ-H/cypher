@@ -4,5 +4,6 @@ bin/
 config/config.ini
 frontend/dist
 frontend/node_modules
+frontend/wailsjs/runtime
 build/bin
 build/darwin
