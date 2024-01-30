@@ -283,38 +283,48 @@ onMounted(() => {
             <span v-else>{{ scope.row.note }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="135px" align="center" :show-overflow-tooltip="false">
+        <el-table-column
+          label="操作"
+          class="el-custom-operation-column"
+          width="135px"
+          align="center"
+          :show-overflow-tooltip="false"
+        >
           <template #default="scope">
-            <el-space v-if="scope.row.__add__">
-              <el-button
-                size="small"
-                type="primary"
-                @click="handleAddConfirm(formRef)"
-                >保存</el-button
-              >
-              <el-button size="small" @click="handleAddCancel(formRef)"
-                >取消</el-button
-              >
-            </el-space>
-            <template v-else>
+            <span class="el-custom-flex" v-if="scope.row.__add__">
               <el-space>
                 <el-button
                   size="small"
-                  @click="copyPassword(scope.row.password)"
-                  >复制</el-button
+                  type="primary"
+                  @click="handleAddConfirm(formRef)"
+                  >保存</el-button
                 >
-                <el-popconfirm
-                  hide-icon
-                  title="确认删除吗？"
-                  confirm-button-text="确认"
-                  cancel-button-text="取消"
-                  @confirm="handleDelete(scope.row.domain)"
+                <el-button size="small" @click="handleAddCancel(formRef)"
+                  >取消</el-button
                 >
-                  <template #reference>
-                    <el-button size="small" type="danger">删除</el-button>
-                  </template>
-                </el-popconfirm>
               </el-space>
+            </span>
+            <template v-else>
+              <span class="el-custom-flex">
+                <el-space>
+                  <el-button
+                    size="small"
+                    @click="copyPassword(scope.row.password)"
+                    >复制</el-button
+                  >
+                  <el-popconfirm
+                    hide-icon
+                    title="确认删除吗？"
+                    confirm-button-text="确认"
+                    cancel-button-text="取消"
+                    @confirm="handleDelete(scope.row.domain)"
+                  >
+                    <template #reference>
+                      <el-button size="small" type="danger">删除</el-button>
+                    </template>
+                  </el-popconfirm>
+                </el-space>
+              </span>
             </template>
           </template>
         </el-table-column>
@@ -383,5 +393,8 @@ main {
 }
 .el-custom-form :deep(.el-form-item) {
   margin-bottom: 0;
+}
+.el-custom-flex {
+  display: flex;
 }
 </style>
