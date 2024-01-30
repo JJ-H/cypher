@@ -283,7 +283,7 @@ onMounted(() => {
             <span v-else>{{ scope.row.note }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="135px" align="center">
+        <el-table-column label="操作" width="135px" align="center" :show-overflow-tooltip="false">
           <template #default="scope">
             <el-space v-if="scope.row.__add__">
               <el-button
