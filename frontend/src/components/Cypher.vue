@@ -351,10 +351,6 @@ main {
   height: 100%;
   width: 100%;
   overflow-y: scroll;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 
 .fixed {
@@ -363,10 +359,6 @@ main {
   top: 0;
 }
 .el-custom-form {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
   margin-top: 8px;
 }
 .el-custom-password-column {
