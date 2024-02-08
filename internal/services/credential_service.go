@@ -31,13 +31,13 @@ func (c CredentialService) ListCredential() ([]*models.Credential, error) {
 		defer db.Close()
 	}
 	reader := bufio.NewReader(db)
-	ciphers, err := ioutil.ReadAll(reader)
+	cyphers, err := ioutil.ReadAll(reader)
 	var credentialList CredentialList
 	if err != nil {
 		panic(err)
 		return credentialList, err
 	}
-	err = json.Unmarshal(ciphers, &credentialList)
+	err = json.Unmarshal(cyphers, &credentialList)
 	if err != nil {
 		panic(err)
 		return credentialList, nil
@@ -100,11 +100,11 @@ func (c CredentialService) SetCredential(credential models.Credential) (models.C
 		}
 		credentialList = append(credentialList, &credential)
 	}
-	ciphers, err := json.Marshal(credentialList)
+	cyphers, err := json.Marshal(credentialList)
 	if err != nil {
 		panic(err)
 	}
-	err = writeFile(ciphers)
+	err = writeFile(cyphers)
 	if err != nil {
 		return models.Credential{}, errors.SetKeyError
 	}
@@ -128,11 +128,11 @@ func (c CredentialService) DeleteCypherByDomain(domain string) {
 		color.Red("未找到该域名的凭证！")
 		return
 	}
-	ciphers, err := json.Marshal(credentialList)
+	cyphers, err := json.Marshal(credentialList)
 	if err != nil {
 		panic(err)
 	}
-	err = writeFile(ciphers)
+	err = writeFile(cyphers)
 	if err != nil {
 		color.Red("写入文件失败！")
 		return
@@ -159,13 +159,13 @@ func writeFile(content []byte) error {
 	if err != nil {
 		panic(err)
 	}
-	file, err = os.OpenFile(dir+"/cypher.json", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+	file, err = os.OpenFile(dir+database.PersistFileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return err
 	}
+	defer file.Close()
 	if _, err = file.Write(content); err != nil {
 		return errors.WriteFileError
 	}
-	defer file.Close()
 	return nil
 }

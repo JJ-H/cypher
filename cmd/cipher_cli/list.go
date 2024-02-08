@@ -23,28 +23,28 @@ var listCmd = &cobra.Command{
 		domain := cmd.Flag("domain").Value.String()
 		note := cmd.Flag("note").Value.String()
 
-		var ciphers services.CredentialList
+		var cyphers services.CredentialList
 		var err error
 
 		if domain != "" {
-			ciphers, err = services.CredentialSrv.FuzzySearch(domain, "domain")
+			cyphers, err = services.CredentialSrv.FuzzySearch(domain, "domain")
 		} else if note != "" {
-			ciphers, err = services.CredentialSrv.FuzzySearch(note, "note")
+			cyphers, err = services.CredentialSrv.FuzzySearch(note, "note")
 		} else {
-			ciphers, err = services.CredentialSrv.ListCredential()
+			cyphers, err = services.CredentialSrv.ListCredential()
 		}
 
 		if err != nil {
 			color.Red("获取凭据列表失败!")
 			return
 		}
-		if len(ciphers) == 0 {
+		if len(cyphers) == 0 {
 			color.Green("暂无凭据!")
 			return
 		}
 
 		cypherAES := crypto.CypherAES
-		for _, cypher := range ciphers {
+		for _, cypher := range cyphers {
 			var password string
 			if password, err = cypherAES.Decrypt(cypher.Password); err != nil {
 				color.Red("解密失败！")
@@ -55,6 +55,6 @@ var listCmd = &cobra.Command{
 
 		plaintext, _ := cmd.Flags().GetBool("plaintext")
 
-		tools.CypherPrinter(ciphers, plaintext)
+		tools.CypherPrinter(cyphers, plaintext)
 	},
 }

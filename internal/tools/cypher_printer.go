@@ -15,11 +15,11 @@ func CypherPrinter(cyphers models.CredentialList, plaintext bool) {
 		tablewriter.Colors{tablewriter.FgBlackColor, tablewriter.BgGreenColor},
 		tablewriter.Colors{tablewriter.FgBlackColor, tablewriter.BgMagentaColor})
 	table.SetAlignment(tablewriter.ALIGN_LEFT)
-	for _, cipher := range cyphers {
+	for _, cypher := range cyphers {
 		if !plaintext {
-			cipher.Password = "******"
+			cypher.Password = "******"
 		}
-		table.Append([]string{cipher.Domain, cipher.Username, cipher.Password, cipher.Note})
+		table.Append([]string{cypher.Domain, cypher.Username, cypher.Password, cypher.Note})
 	}
 	table.Render()
 }

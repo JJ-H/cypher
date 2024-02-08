@@ -9,6 +9,10 @@ var (
 	DB *os.File
 )
 
+const (
+	PersistFileName = "/.cypher.json"
+)
+
 func InitDB() *os.File {
 	dir, err := os.UserHomeDir()
 	var file *os.File
@@ -16,14 +20,13 @@ func InitDB() *os.File {
 		panic(err)
 	}
 
-	if _, err := os.Stat(dir + "/cypher.json"); err != nil {
+	if _, err := os.Stat(dir + PersistFileName); err != nil {
 		// 自动创建文件并写入空内容
-		file, err = os.Create(dir + "/cypher.json")
+		file, err = os.Create(dir + PersistFileName)
 		fmt.Fprintf(file, "[]")
 	}
 
-	file, err = os.OpenFile(dir+"/cypher.json", os.O_RDWR|os.O_CREATE, 0644)
-	os.Stat(dir + "/cypher.json")
+	file, err = os.OpenFile(dir+PersistFileName, os.O_RDWR, 0644)
 	if err != nil {
 		panic(err)
 	}

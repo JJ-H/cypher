@@ -20,7 +20,7 @@
 
 ## Usage
 
-> 为了方便大家开箱即用，目前 cypher 采用了最简单的存储模式：文件存储，密码将以 json 格式的形式存储在 ~/cypher.json 文件中，后续将通过配置的方式支持数据库等存储模式。
+> 为了方便大家开箱即用，目前 cypher 采用了最简单的存储模式：文件存储，密码将以 json 格式的形式存储在 ~/.cypher.json 文件中，后续将通过配置的方式支持数据库等存储模式。
 
 ```shell
 # 拉取本仓库代码
@@ -75,7 +75,7 @@ cypher 目前支持两种密码存储模式
   其中明文存储不需要配置，但是不安全，因此建议使用密文存储，密文存储需要配置 `~/.cypher_config.ini` 文件，配置如下：
 
   ```ini
-  app_name = "Cipher"
+  app_name = "Cypher"
 
   [crypto]
   type = "AES"
@@ -98,7 +98,7 @@ cp bin/cypher /usr/local/bin
 
 ```shell
 ➜ ~ cypher --help
-You can easily manage your ciphers with cypher
+You can easily manage your cyphers with cypher
 like set、get、list、delete and so on.
 
 Usage:
@@ -215,5 +215,5 @@ Use "cypher [command] --help" for more information about a command.
 
   ```shell
   ➜ ~ cypher version
-  cipher version 1.0.0
+  cypher version 1.0.0
   ```

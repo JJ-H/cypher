@@ -1,4 +1,4 @@
-app_name = "Cipher"
+app_name = "Cypher"
 
 [crypto]
 type = "AES"

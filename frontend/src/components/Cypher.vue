@@ -293,14 +293,14 @@ onMounted(() => {
           <template #default="scope">
             <span class="el-custom-flex" v-if="scope.row.__add__">
               <el-space>
+                <el-button size="small" @click="handleAddCancel(formRef)"
+                >取消</el-button
+                >
                 <el-button
                   size="small"
                   type="primary"
                   @click="handleAddConfirm(formRef)"
                   >保存</el-button
-                >
-                <el-button size="small" @click="handleAddCancel(formRef)"
-                  >取消</el-button
                 >
               </el-space>
             </span>

@@ -23,9 +23,9 @@ func NewCsvExporter(comma, destination string) *CsvExporter {
 
 func (c CsvExporter) Export() error {
 	srv := services.CredentialSrv
-	var ciphers services.CredentialList
+	var cyphers services.CredentialList
 	var err error
-	ciphers, err = srv.ListCredential()
+	cyphers, err = srv.ListCredential()
 	if err != nil {
 		color.Red("获取凭据列表失败!")
 		return err
@@ -40,11 +40,11 @@ func (c CsvExporter) Export() error {
 		return err
 	}
 	defer outFile.Close()
-	progressBar := tools.NewProgressBar(len(ciphers))
+	progressBar := tools.NewProgressBar(len(cyphers))
 	_csv := csv.NewWriter(outFile)
 	data := make([][]string, 0)
 	data = append(data, []string{"Domain", "Username", "Password", "Note"})
-	for _, v := range ciphers {
+	for _, v := range cyphers {
 		progressBar.Describe(v.Note)
 		time.Sleep(time.Second / 4)
 		progressBar.Add(1)
