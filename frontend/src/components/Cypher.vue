@@ -6,6 +6,7 @@ import {
   SetCredential,
   DeleteCypherByDomain,
 } from "../../wailsjs/go/services/CredentialService";
+import {ClipboardSetText} from "../../wailsjs/runtime/runtime.js";
 
 const defaultFormValue = {
   domain: "",
@@ -59,8 +60,8 @@ const togglePasswordVisibility = (domain) => {
   }
 };
 
-const filterCyphers = computed(() =>
-  data.cyphers.filter((cypher) => {
+const filterCyphers = computed(() => {
+  const filtered = data.cyphers.filter((cypher) => {
     if (cypher.__add__) {
       return true;
     }
@@ -71,12 +72,23 @@ const filterCyphers = computed(() =>
       key = "username";
     }
     const keywordMatch =
-      !data.keyword ||
-      cypher[key].toLowerCase().includes(data.keyword.toLowerCase());
+        !data.keyword ||
+        cypher[key].toLowerCase().includes(data.keyword.toLowerCase());
 
     return keywordMatch;
-  })
-);
+  });
+
+  // 如果筛选后的结果只有一个，自动复制密码
+  if (filtered.length === 1) {
+    const cypher = filtered[0];
+    ClipboardSetText(cypher.password)
+    ElMessage.success("密码已自动复制到剪贴板");
+  }
+
+  return filtered;
+});
+
+
 const listCredential = () => {
   data.loading = true;
   return new Promise(() => {
